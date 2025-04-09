@@ -1,0 +1,18 @@
+$primary-color: #242f9b;
+$text-color: #ffffff;
+$header-height: 80px;
+$button-margin: 25px;
+
+.header {
+  width: 100%;
+  height: $header-height;
+  background-color: $primary-color;
+  color: $text-color;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sign-out-button {
+  color: $text-color;
+  margin: auto $button-margin auto auto;
+}

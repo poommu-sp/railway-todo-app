@@ -1,0 +1,32 @@
+$primary-color: #242f9b;
+$text-color: #555555;
+
+.signin {
+  width: 500px;
+  margin: 0 auto;
+
+  .signin-form {
+    margin: 25px 0;
+  }
+
+  .email-label,
+  .password-label {
+    color: $text-color;
+  }
+
+  .email-input,
+  .password-input {
+    width: 100%;
+    font-size: large;
+    height: 30px;
+    margin-bottom: 25px;
+  }
+
+  .signin-button {
+    background-color: $primary-color;
+    color: #ffffff;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+  }
+}
