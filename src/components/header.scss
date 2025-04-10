@@ -16,3 +16,8 @@ $button-margin: 25px;
   color: $text-color;
   margin: auto $button-margin auto auto;
 }
+
+.site-name {
+  margin: auto auto auto 20px;
+  cursor: pointer;
+}

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useCookies } from "react-cookie";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { Header } from "../components/Header";
 import "./signin.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../authSlice";
-import { url } from "../const";
+import { signInUser } from "../apis/auth";
 
 export const SignIn = () => {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -18,17 +17,15 @@ export const SignIn = () => {
   const [, setCookie] = useCookies(["token"]);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
-  const onSignIn = () => {
-    axios
-      .post(`${url}/signin`, { email: email, password: password })
-      .then((res) => {
-        setCookie("token", res.data.token);
-        dispatch(signIn());
-        navigate("/");
-      })
-      .catch((err) => {
-        setErrorMessage(`サインインに失敗しました。${err}`);
-      });
+  const onSignIn = async () => {
+    try {
+      const data = await signInUser(email, password);
+      setCookie("token", data.token);
+      dispatch(signIn());
+      navigate("/");
+    } catch (err) {
+      setErrorMessage(`サインインに失敗しました。${err}`);
+    }
   };
 
   if (auth) return <Navigate to="/" />;
@@ -38,28 +35,34 @@ export const SignIn = () => {
       <Header />
       <main className="signin">
         <h2>サインイン</h2>
-        <p className="error-message">{errorMessage}</p>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+
         <form className="signin-form">
-          <label className="email-label">メールアドレス</label>
-          <br />
+          <label htmlFor="email" className="email-label">
+            メールアドレス
+          </label>
           <input
+            id="email"
             type="email"
             className="email-input"
             onChange={handleEmailChange}
           />
-          <br />
-          <label className="password-label">パスワード</label>
-          <br />
+
+          <label htmlFor="password" className="password-label">
+            パスワード
+          </label>
           <input
+            id="password"
             type="password"
             className="password-input"
             onChange={handlePasswordChange}
           />
-          <br />
+
           <button type="button" className="signin-button" onClick={onSignIn}>
             サインイン
           </button>
         </form>
+
         <Link to="/signup">新規作成</Link>
       </main>
     </div>

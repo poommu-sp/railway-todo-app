@@ -1,31 +1,115 @@
 $primary-color: #242f9b;
+$error-color: #ff3333;
 $text-color: #555555;
+$button-border-radius: 5px;
+$button-height: 40px;
+$button-width: 120px;
+$margin-bottom: 25px;
+$white-color: #ffffff;
 
 .new-task {
-  width: 1000px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1000px;
   margin: 0 auto;
+  padding: 50px;
 
   .new-task-form {
     color: $text-color;
+    display: flex;
+    flex-direction: column;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 1rem;
+    }
 
     .new-task-select-list,
     .new-task-title,
     .new-task-detail,
     .new-task-limit {
-      width: 300px;
-      margin-bottom: 25px;
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+      }
     }
 
     .new-task-detail {
       height: 200px;
     }
 
-    .new-task-button {
-      background-color: $primary-color;
-      color: #ffffff;
-      width: 80px;
-      height: 40px;
-      border-radius: 5px;
+    .edit-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+
+      .new-task-button {
+        width: 100%;
+        max-width: $button-width;
+        height: $button-height;
+        border-radius: $button-border-radius;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        background-color: $primary-color;
+        color: $white-color;
+        border: none;
+      }
+    }
+  }
+}
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .new-task {
+    padding: 20px;
+    margin: 0;
+  }
+
+  .new-task-form {
+    .new-task-select-list,
+    .new-task-title,
+    .new-task-detail,
+    .new-task-limit {
+      max-width: 100%;
+    }
+
+    .edit-buttons {
+      .new-task-button {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+/* Smartphone (320px and below) */
+@media (max-width: 320px) {
+  .new-task {
+    padding: 10px;
+    margin: 0;
+  }
+
+  .new-task-form {
+    .new-task-select-list,
+    .new-task-title,
+    .new-task-detail,
+    .new-task-limit {
+      font-size: 0.9rem;
+    }
+
+    .edit-buttons {
+      .new-task-button {
+        max-width: 100%;
+      }
     }
   }
 }

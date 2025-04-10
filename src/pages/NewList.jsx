@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
-import axios from "axios";
 import { Header } from "../components/Header";
 import { useNavigate } from "react-router-dom";
-import { url } from "../const";
 import "./newList.scss";
+import { createList } from "../apis/list";
 
 export const NewList = () => {
   const [cookies] = useCookies(["token"]);
@@ -13,19 +12,10 @@ export const NewList = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const handleTitleChange = (e) => setTitle(e.target.value);
   const onCreateList = () => {
-    const data = {
-      title: title,
-    };
+    const data = { title };
 
-    axios
-      .post(`${url}/lists`, data, {
-        headers: {
-          authorization: `Bearer ${cookies.token}`,
-        },
-      })
-      .then(() => {
-        navigate("/");
-      })
+    createList(cookies.token, data)
+      .then(() => navigate("/"))
       .catch((err) => {
         setErrorMessage(`リストの作成に失敗しました。${err}`);
       });
@@ -38,14 +28,17 @@ export const NewList = () => {
         <h2>リスト新規作成</h2>
         <p className="error-message">{errorMessage}</p>
         <form className="new-list-form">
-          <label>タイトル</label>
-          <br />
-          <input
-            type="text"
-            onChange={handleTitleChange}
-            className="new-list-title"
-          />
-          <br />
+          <div className="form-group">
+            <label htmlFor="title-input" className="form-label">
+              タイトル
+            </label>
+            <input
+              id="title-input"
+              type="text"
+              onChange={handleTitleChange}
+              className="new-list-title"
+            />
+          </div>
           <button
             type="button"
             onClick={onCreateList}

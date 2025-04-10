@@ -4,37 +4,59 @@ $text-color: #000000;
 $white-color: #ffffff;
 
 .taskList {
-  margin: 50px auto;
-  list-style: none;
-  width: 1000px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 50px;
+
+  .link-text {
+    text-decoration: none;
+    color: $primary-color;
+  }
 
   .list-header {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
   }
 
   .list-menu {
     text-align: right;
+    width: 100%;
+    margin-top: 10px;
   }
 
   .list-tab {
-    list-style: none;
     display: flex;
+    gap: 5px;
     overflow-x: auto;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+    margin-top: 15px;
 
     .list-tab-item {
       flex-shrink: 0;
-      width: 100px;
-      padding: 0 25px;
-      text-overflow: normal;
-      margin-right: 5px;
-      border: solid 1px $primary-color;
-      justify-content: center;
-      align-items: center;
+      padding: 10px 15px;
+      border: 1px solid $primary-color;
+      color: $primary-color;
+      background-color: transparent;
+      text-align: center;
+      min-width: 80px;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
 
       &.active {
         background-color: $primary-color;
         color: $white-color;
+      }
+
+      &:hover {
+        background-color: $primary-color;
+        color: $white-color;
+        cursor: pointer;
       }
     }
   }
@@ -45,15 +67,19 @@ $white-color: #ffffff;
     .tasks-header {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     .task-item {
       list-style-type: none;
-      width: calc(100% - 25px);
+      width: 100%;
       background-color: $background-color;
-      padding-left: 25px;
-      font-size: large;
-      border: solid 1px $white-color;
+      border: 1px solid $white-color;
+      margin-bottom: 15px;
+      font-size: 1.125rem;
+      transition: background-color 0.2s;
+      box-sizing: border-box;
 
       .task-item-link {
         display: block;
@@ -61,16 +87,72 @@ $white-color: #ffffff;
         height: 100%;
         text-decoration: none;
         color: $text-color;
+        padding: 15px 25px;
+        box-sizing: border-box;
       }
     }
   }
 
   .display-select-wrapper {
-    width: 100px;
-    margin: 0 0 25px auto;
+    width: 100%;
+    margin: 10px 0 25px auto;
 
     .display-select {
       width: 100%;
+      max-width: 100px;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .taskList {
+    padding: 20px;
+  }
+
+  .list-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .list-menu {
+    text-align: center;
+  }
+
+  .tasks {
+    margin-top: 15px;
+  }
+
+  .display-select-wrapper {
+    width: 90%;
+    margin: 0 auto 20px;
+  }
+}
+
+@media (max-width: 320px) {
+  .taskList {
+    padding: 10px;
+  }
+
+  .list-tab-item {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  .task-item {
+    font-size: 0.9rem;
+
+    .task-item-link {
+      padding: 10px 15px;
+    }
+  }
+
+  .display-select-wrapper {
+    width: 100%;
+    margin: 0 auto 15px;
   }
 }

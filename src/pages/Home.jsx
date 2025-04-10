@@ -5,6 +5,7 @@ import axios from "axios";
 import { Header } from "../components/Header";
 import { url } from "../const";
 import "./home.scss";
+import { fetchLists, fetchTasksForList } from "../apis/list";
 
 export const Home = () => {
   const [isDoneDisplay, setIsDoneDisplay] = useState("todo"); // todo->未完了 done->完了
@@ -15,12 +16,7 @@ export const Home = () => {
   const [cookies] = useCookies(["token"]);
   const handleIsDoneDisplayChange = (e) => setIsDoneDisplay(e.target.value);
   useEffect(() => {
-    axios
-      .get(`${url}/lists`, {
-        headers: {
-          authorization: `Bearer ${cookies.token}`,
-        },
-      })
+    fetchLists(cookies.token)
       .then((res) => {
         setLists(res.data);
         if (res.data.length > 0) {
@@ -36,12 +32,7 @@ export const Home = () => {
     const listId = lists[0]?.id;
     if (typeof listId !== "undefined") {
       setSelectListId(listId);
-      axios
-        .get(`${url}/lists/${listId}/tasks`, {
-          headers: {
-            authorization: `Bearer ${cookies.token}`,
-          },
-        })
+      fetchTasksForList(cookies.token, selectListId)
         .then((res) => {
           setTasks(res.data.tasks);
         })
@@ -53,12 +44,7 @@ export const Home = () => {
 
   const handleSelectList = (id) => {
     setSelectListId(id);
-    axios
-      .get(`${url}/lists/${id}/tasks`, {
-        headers: {
-          authorization: `Bearer ${cookies.token}`,
-        },
-      })
+    fetchTasksForList(cookies.token, id)
       .then((res) => {
         setTasks(res.data.tasks);
       })
@@ -102,10 +88,12 @@ export const Home = () => {
             <h2>リスト一覧</h2>
             <div className="list-menu">
               <p>
-                <Link to="/list/new">リスト新規作成</Link>
+                <Link to="/list/new" className="link-text">
+                  リスト新規作成
+                </Link>
               </p>
               <p>
-                <Link to={`/lists/${selectListId}/edit`}>
+                <Link to={`/lists/${selectListId}/edit`} className="link-text">
                   選択中のリストを編集
                 </Link>
               </p>
@@ -132,7 +120,9 @@ export const Home = () => {
           <div className="tasks">
             <div className="tasks-header">
               <h2>タスク一覧</h2>
-              <Link to="/task/new">タスク新規作成</Link>
+              <Link to="/task/new" className="link-text">
+                タスク新規作成
+              </Link>
             </div>
             <div className="display-select-wrapper">
               <select
@@ -208,9 +198,9 @@ const Tasks = (props) => {
                 className="task-item-link"
               >
                 <h3>{task.title}</h3>
-                期限: {formatDeadline(task.limit)}
+                <strong>期限:</strong> {formatDeadline(task.limit)}
                 <br />
-                Status: {task.done ? "完了" : "未完了"}
+                <strong>Status:</strong> {task.done ? "完了" : "未完了"}
               </Link>
             </li>
           ))}
@@ -231,11 +221,11 @@ const Tasks = (props) => {
               className="task-item-link"
             >
               <h3>{task.title}</h3>
-              期限: {formatDeadline(task.limit)}
+              <strong>期限:</strong> {formatDeadline(task.limit)}
               <br />
-              残り時間: {calculateRemainingTime(task.limit)}
+              <strong>残り時間:</strong> {calculateRemainingTime(task.limit)}
               <br />
-              Status: {task.done ? "完了" : "未完了"}
+              <strong>Status:</strong> {task.done ? "完了" : "未完了"}
             </Link>
           </li>
         ))}

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "../components/Header";
-import axios from "axios";
 import { useCookies } from "react-cookie";
-import { url } from "../const";
 import { useNavigate, useParams } from "react-router-dom";
 import "./editTask.scss";
+import { updateTask, deleteTask, fetchTask } from "../apis/task";
 
 export const EditTask = () => {
   const navigate = useNavigate();
@@ -27,42 +26,23 @@ export const EditTask = () => {
       limit: new Date(limit).toISOString(),
     };
 
-    axios
-      .put(`${url}/lists/${listId}/tasks/${taskId}`, data, {
-        headers: {
-          authorization: `Bearer ${cookies.token}`,
-        },
-      })
-      .then((res) => {
-        navigate("/");
-      })
+    updateTask(cookies.token, listId, taskId, data)
+      .then(() => navigate("/"))
       .catch((err) => {
         setErrorMessage(`更新に失敗しました。${err}`);
       });
   };
 
   const onDeleteTask = () => {
-    axios
-      .delete(`${url}/lists/${listId}/tasks/${taskId}`, {
-        headers: {
-          authorization: `Bearer ${cookies.token}`,
-        },
-      })
-      .then(() => {
-        navigate("/");
-      })
+    deleteTask(cookies.token, listId, taskId)
+      .then(() => navigate("/"))
       .catch((err) => {
         setErrorMessage(`削除に失敗しました。${err}`);
       });
   };
 
   useEffect(() => {
-    axios
-      .get(`${url}/lists/${listId}/tasks/${taskId}`, {
-        headers: {
-          authorization: `Bearer ${cookies.token}`,
-        },
-      })
+    fetchTask(cookies.token, listId, taskId)
       .then((res) => {
         const task = res.data;
         setTitle(task.title);
@@ -73,7 +53,7 @@ export const EditTask = () => {
       .catch((err) => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
       });
-  }, []);
+  }, [listId, taskId]);
 
   const formatDatetimeLocal = (isoString) => {
     const date = new Date(isoString);
@@ -89,67 +69,79 @@ export const EditTask = () => {
         <h2>タスク編集</h2>
         <p className="error-message">{errorMessage}</p>
         <form className="edit-task-form">
-          <label>タイトル</label>
-          <br />
-          <input
-            type="text"
-            onChange={handleTitleChange}
-            className="edit-task-title"
-            value={title}
-          />
-          <br />
-          <label>詳細</label>
-          <br />
-          <textarea
-            type="text"
-            onChange={handleDetailChange}
-            className="edit-task-detail"
-            value={detail}
-          />
-          <br />
-          <label>期限</label>
-          <br />
-          <input
-            type="datetime-local"
-            onChange={handleLimitChange}
-            className="edit-task-limit"
-            value={limit}
-          />
-          <br />
-          <div>
+          <div className="form-group">
+            <label htmlFor="task-title">タイトル</label>
             <input
-              type="radio"
-              id="todo"
-              name="status"
-              value="todo"
-              onChange={handleIsDoneChange}
-              checked={isDone === false ? "checked" : ""}
+              type="text"
+              id="task-title"
+              onChange={handleTitleChange}
+              className="edit-task-title"
+              value={title}
             />
-            未完了
-            <input
-              type="radio"
-              id="done"
-              name="status"
-              value="done"
-              onChange={handleIsDoneChange}
-              checked={isDone === true ? "checked" : ""}
-            />
-            完了
           </div>
-          <button
-            type="button"
-            className="delete-task-button"
-            onClick={onDeleteTask}
-          >
-            削除
-          </button>
-          <button
-            type="button"
-            className="edit-task-button"
-            onClick={onUpdateTask}
-          >
-            更新
-          </button>
+
+          <div className="form-group">
+            <label htmlFor="task-detail">詳細</label>
+            <textarea
+              id="task-detail"
+              onChange={handleDetailChange}
+              className="edit-task-detail"
+              value={detail}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="task-limit">期限</label>
+            <input
+              type="datetime-local"
+              id="task-limit"
+              onChange={handleLimitChange}
+              className="edit-task-limit"
+              value={limit}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>状態</label>
+            <div>
+              <input
+                type="radio"
+                id="todo"
+                name="status"
+                value="todo"
+                onChange={handleIsDoneChange}
+                checked={isDone === false}
+              />
+              <label htmlFor="todo">未完了</label>
+              <input
+                type="radio"
+                id="done"
+                name="status"
+                value="done"
+                onChange={handleIsDoneChange}
+                checked={isDone === true}
+              />
+              <label htmlFor="done">完了</label>
+            </div>
+          </div>
+
+          <div className="edit-buttons">
+            <button
+              type="button"
+              className="delete-task-button"
+              onClick={onDeleteTask}
+            >
+              削除
+            </button>
+
+            <button
+              type="button"
+              className="edit-task-button"
+              onClick={onUpdateTask}
+            >
+              更新
+            </button>
+          </div>
         </form>
       </main>
     </div>

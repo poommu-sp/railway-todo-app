@@ -1,45 +1,113 @@
-@charset "utf-8";
-
-// Define color variables
 $primary-color: #242f9b;
 $error-color: #ff3333;
 $text-color: #555555;
 $button-border-radius: 5px;
 $button-height: 40px;
-$button-width: 80px;
-$input-width: 300px;
+$button-width: 120px;
 $margin-bottom: 25px;
+$white-color: #ffffff;
 
 .edit-task {
-  width: 1000px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1000px;
   margin: 0 auto;
+  padding: 50px;
 
   .edit-task-form {
     color: $text-color;
+    display: flex;
+    flex-direction: column;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 1rem;
+    }
+
+    .edit-task-title,
+    .edit-task-detail,
+    .edit-task-limit {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .edit-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      .edit-task-button,
+      .delete-task-button {
+        width: 100%;
+        max-width: $button-width;
+        height: $button-height;
+        border-radius: $button-border-radius;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .delete-task-button {
+        color: $error-color;
+        border: solid 1px $error-color;
+        background-color: transparent;
+      }
+
+      .edit-task-button {
+        background-color: $primary-color;
+        color: $white-color;
+        border: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .edit-task {
+    padding: 20px;
+    margin: 0;
   }
 
-  .edit-task-title,
-  .edit-task-detail,
-  .edit-task-limit {
-    width: $input-width;
-    margin-bottom: $margin-bottom;
+  .edit-task-form {
+    .edit-task-title,
+    .edit-task-detail,
+    .edit-task-limit {
+      max-width: 100%;
+    }
+
+    .edit-task-button,
+    .delete-task-button {
+      max-width: 100%;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .edit-task {
+    padding: 10px;
+    margin: 0;
   }
 
-  .delete-task-button,
-  .edit-task-button {
-    width: $button-width;
-    height: $button-height;
-    border-radius: $button-border-radius;
-  }
+  .edit-task-form {
+    .edit-task-title,
+    .edit-task-detail,
+    .edit-task-limit {
+      font-size: 0.9rem;
+    }
 
-  .delete-task-button {
-    color: $error-color;
-    border: solid 1px $error-color;
-    margin: $margin-bottom 5px;
-  }
-
-  .edit-task-button {
-    background-color: $primary-color;
-    color: #ffffff;
+    .edit-task-button,
+    .delete-task-button {
+      max-width: 100%;
+    }
   }
 }
