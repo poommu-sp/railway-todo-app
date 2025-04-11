@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import axios from "axios";
 import { Header } from "../components/Header";
-import { url } from "../const";
 import "./home.scss";
 import { fetchLists, fetchTasksForList } from "../apis/list";
 
@@ -76,7 +74,7 @@ export const Home = () => {
     if (activeTab) {
       activeTab.focus();
     }
-  }, [selectListId]);
+  }, [selectListId, lists]);
 
   return (
     <div>

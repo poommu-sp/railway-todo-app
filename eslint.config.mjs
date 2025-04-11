@@ -36,6 +36,7 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
+      ...reactPlugin.configs.recommended.rules,
       "react/react-in-jsx-scope": "off",
       "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
       "react/prop-types": "off",
